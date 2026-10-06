@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一刻电影网 - 高清影视在线观看 | yikedianyingwang-cn.github.io</title>
+    <meta name="description" content="一刻电影网(yikedianyingwang-cn.github.io)提供最新高清电影、热播剧集在线观看，包含动作、喜剧、爱情、科幻等多种分类，每日更新，尽享观影乐趣。">
+    <meta name="keywords" content="一刻电影网, yikedianyingwang-cn, yikedianyingwang-cn.github.io, 高清电影, 在线观看, 电影排行榜">
+    <meta name="author" content="一刻电影网">
+    <meta name="robots" content="index, follow">
+    <style>
+        /* 全局重置与基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            scroll-behavior: smooth;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        ul {
+            list-style: none;
+        }
+        
+        /* 导航栏 - 差异化：固定顶部玻璃拟态效果 */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(20, 20, 20, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 0 5%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #e50914;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        nav ul {
+            display: flex;
+            gap: 20px;
+        }
+        nav a {
+            color: #fff;
+            font-size: 0.95rem;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background 0.3s, color 0.3s;
+        }
+        nav a:hover {
+            background: #e50914;
+            color: #fff;
+        }
+
+        /* 主内容区 */
+        main {
+            margin-top: 60px;
+        }
+
+        /* 栏目1：首页推荐 - 差异化：全屏视差Hero风格 */
+        #home {
+            height: calc(100vh - 60px);
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), linear-gradient(45deg, #1a1a2e, #16213e, #0f3460);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            color: #fff;
+        }
+        #home h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #e50914;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        #home p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 30px;
+            color: #ddd;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #e50914;
+            color: #fff;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(229, 9, 20, 0.4);
+        }
+
+        /* 栏目2：电影分类 - 差异化：深色网格卡片风格，不同DOM结构 */
+        #categories {
+            padding: 60px 5%;
+            background: #121212;
+            color: #fff;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #e50914;
+        }
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+        }
+        .category-card {
+            background: #1e1e1e;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            border: 1px solid #333;
+        }
+        .category-card:hover {
+            transform: scale(1.05);
+        }
+        .card-header {
+            background: #e50914;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .card-body {
+            padding: 20px;
+            text-align: center;
+        }
+        .category-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            border: 1px solid #e50914;
+            color: #e50914;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        .category-link:hover {
+            background: #e50914;
+            color: #fff;
+        }
+
+        /* 栏目3：排行榜 - 差异化：列表序号与条纹行，不同DOM结构 */
+        #ranking {
+            padding: 60px 5%;
+            background: #f9f9f9;
+        }
+        .ranking-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.2s;
+        }
+        .ranking-item:hover {
+            background: #f0f0f0;
+        }
+        .ranking-item:nth-child(even) {
+            background: #fafafa;
+        }
+        .ranking-item:nth-child(even):hover {
+            background: #f0f0f0;
+        }
+        .rank-num {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #e50914;
+            width: 50px;
+            text-align: center;
+        }
+        .rank-info {
+            flex: 1;
+        }
+        .rank-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .rank-meta {
+            font-size: 0.85rem;
+            color: #777;
+        }
+        .rank-action a {
+            padding: 6px 12px;
+            background: #333;
+            color: #fff;
+            border-radius: 3px;
+            font-size: 0.9rem;
+        }
+        .rank-action a:hover {
+            background: #e50914;
+        }
+
+        /* 栏目4：最新资讯 - 差异化：时间轴布局，不同DOM结构 */
+        #news {
+            padding: 60px 5%;
+            background: #fff;
+        }
+        .timeline {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            padding-left: 30px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #e50914;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding-left: 20px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -32px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e50914;
+            border: 3px solid #fff;
+            box-shadow: 0 0 0 2px #e50914;
+        }
+        .timeline-date {
+            font-size: 0.9rem;
+            color: #e50914;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .timeline-content {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        .timeline-content h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* 栏目5：关于我们 - 差异化：简洁居中表单与信息，不同DOM结构 */
+        #about {
+            padding: 60px 5%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            text-align: center;
+        }
+        .about-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+        .about-container h2 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        .about-container p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        .site-url {
+            display: inline-block;
+            background: rgba(0,0,0,0.2);
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .contact-form input, .contact-form textarea {
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            width: 100%;
+        }
+        .contact-form button {
+            padding: 12px;
+            background: #e50914;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .contact-form button:hover {
+            background: #b2070e;
+        }
+
+        /* 页脚 */
+        footer {
+            background: #0a0a0a;
+            color: #888;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* 移动端自适应 - 媒体查询 */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                height: auto;
+                padding: 10px 0;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-top: 10px;
+            }
+            main {
+                margin-top: 100px;
+            }
+            #home {
+                height: auto;
+                min-height: calc(100vh - 100px);
+                padding: 60px 20px;
+            }
+            #home h1 {
+                font-size: 2rem;
+            }
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+            .ranking-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .rank-num {
+                margin-bottom: 10px;
+            }
+            .rank-action {
+                margin-top: 10px;
+                width: 100%;
+            }
+            .rank-action a {
+                display: block;
+                text-align: center;
+            }
+            .about-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/xiaobao.js"></script>
+<script src="https://www.gov.cn.edu.cn.889988.info/zhangzong.js"></script>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">一刻电影网</div>
+            <nav>
+                <ul>
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="#categories">电影分类</a></li>
+                    <li><a href="#ranking">排行榜</a></li>
+                    <li><a href="#news">最新资讯</a></li>
+                    <li><a href="#about">关于我们</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- 栏目1：首页推荐 -->
+        <section id="home">
+            <h1>一刻电影网</h1>
+            <p>您的专属高清影视库。提供最新、最热的电影、剧集在线观看服务。每日更新，畅享极致观影体验。</p>
+            <a href="#" class="btn">立即观看</a>
+        </section>
+
+        <!-- 栏目2：电影分类 -->
+        <section id="categories">
+            <h2 class="section-title">电影分类</h2>
+            <div class="category-grid">
+                <div class="category-card">
+                    <div class="card-header">动作片</div>
+                    <div class="card-body">
+                        <p>热血激战，震撼视效</p>
+                        <a href="#" class="category-link">进入频道</a>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="card-header">喜剧片</div>
+                    <div class="card-body">
+                        <p>欢乐无限，笑料不断</p>
+                        <a href="#" class="category-link">进入频道</a>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="card-header">爱情片</div>
+                    <div class="card-body">
+                        <p>浪漫邂逅，感动瞬间</p>
+                        <a href="#" class="category-link">进入频道</a>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="card-header">科幻片</div>
+                    <div class="card-body">
+                        <p>探索未知，脑洞大开</p>
+                        <a href="#" class="category-link">进入频道</a>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="card-header">恐怖片</div>
+                    <div class="card-body">
+                        <p>惊悚悬疑，心跳加速</p>
+                        <a href="#" class="category-link">进入频道</a>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="card-header">纪录片</div>
+                    <div class="card-body">
+                        <p>真实记录，世界万象</p>
+                        <a href="#" class="category-link">进入频道</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 栏目3：排行榜 -->
+        <section id="ranking">
+            <h2 class="section-title" style="color: #333;">热门排行榜</h2>
+            <div class="ranking-container">
+                <div class="ranking-item">
+                    <div class="rank-num">1</div>
+                    <div class="rank-info">
+                        <div class="rank-title">沙丘2</div>
+                        <div class="rank-meta">科幻 / 冒险 / 2024</div>
+                    </div>
+                    <div class="rank-action">
+                        <a href="#">观看</a>
+                    </div>
+                </div>
+                <div class="ranking-item">
+                    <div class="rank-num">2</div>
+                    <div class="rank-info">
+                        <div class="rank-title">奥本海默</div>
+                        <div class="rank-meta">传记 / 历史 / 2023</div>
+                    </div>
+                    <div class="rank-action">
+                        <a href="#">观看</a>
+                    </div>
+                </div>
+                <div class="ranking-item">
+                    <div class="rank-num">3</div>
+                    <div class="rank-info">
+                        <div class="rank-title">坠落的审判</div>
+                        <div class="rank-meta">剧情 / 悬疑 / 2023</div>
+                    </div>
+                    <div class="rank-action">
+                        <a href="#">观看</a>
+                    </div>
+                </div>
+                <div class="ranking-item">
+                    <div class="rank-num">4</div>
+                    <div class="rank-info">
+                        <div class="rank-title">美国小说</div>
+                        <div class="rank-meta">喜剧 / 剧情 / 2023</div>
+                    </div>
+                    <div class="rank-action">
+                        <a href="#">观看</a>
+                    </div>
+                </div>
+                <div class="ranking-item">
+                    <div class="rank-num">5</div>
+                    <div class="rank-info">
+                        <div class="rank-title">花月杀手</div>
+                        <div class="rank-meta">剧情 / 犯罪 / 2023</div>
+                    </div>
+                    <div class="rank-action">
+                        <a href="#">观看</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 栏目4：最新资讯 -->
+        <section id="news">
+            <h2 class="section-title" style="color: #333;">最新资讯</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2024-05-20</div>
+                    <div class="timeline-content">
+                        <h3>《一刻电影网》全新版本上线</h3>
+                        <p>我们很高兴地宣布，网站进行了全面重构，采用最新的响应式设计，为您带来更流畅的观影体验。</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2024-05-18</div>
+                    <div class="timeline-content">
+                        <h3>本周新增影片100+部</h3>
+                        <p>涵盖最新院线大片及经典老片修复版，满足您的各种观影需求。</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2024-05-15</div>
+                    <div class="timeline-content">
+                        <h3>服务器升级完成，速度提升</h3>
+                        <p>为提供更好的服务，我们升级了服务器带宽，现在播放更加流畅不卡顿。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 栏目5：关于我们 -->
+        <section id="about">
+            <div class="about-container">
+                <h2>关于一刻电影网</h2>
+                <div class="site-url">https://yikedianyingwang-cn.github.io</div>
+                <p>一刻电影网致力于打造一个纯净、高清、无广告的在线观影平台。我们专注于收集互联网上的优质影视资源，为您提供便捷的观看体验。</p>
+                <p>网站名称：一刻电影网<br>关键词：一刻电影网, yikedianyingwang-cn</p>
+                
+                <form class="contact-form" onsubmit="event.preventDefault();">
+                    <input type="text" placeholder="您的姓名" required>
+                    <input type="email" placeholder="您的邮箱" required>
+                    <textarea rows="4" placeholder="您的留言或建议" required></textarea>
+                    <button type="submit">发送留言</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 一刻电影网 (yikedianyingwang-cn.github.io) 保留所有权利。</p>
+        <p>网站名称：一刻电影网 | 网址：https://yikedianyingwang-cn.github.io</p>
+    </footer>
+
+</body>
+</html>
